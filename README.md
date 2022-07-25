@@ -15,13 +15,13 @@ Repositório com os trabalhos da disciplina de eletrônica
 
 | Lista de componentes | Quantidade | Preço unitário | Preço total|
 |:-------------------- |:------|:------|:------|
-|LM-317|1|R$3.00||R$3.00|
+|LM-317|1|R$3.00|R$3.00|
 |Potenciômetro de 10k|1|R$4.00|R$4.00|
 |Diodo 1N-4004|4|R$0.10|R$0.40|
 |Capacitor Eletrolítico 470uF / 25V|1|R$0.45|R$0.45|
 |LED|1|R$0.50|R$0.50|
 |Resistor de 1k|8|R$0,10|R$0.80|
-|Total|**R$9.15**|
+|Total|-|-|**R$9.15**|
 
 Quanto ao transformador, o do laboratório foi utilizado. Uma protoboard
 do laboratório também foi utilizada.
