@@ -9,7 +9,7 @@ Repositório com os trabalhos da disciplina de eletrônica
 |Arthur Queiroz Moura|13671532|
 |Miguel Prates Ferreira de Lima Catanhede|13672745|
 |Amanda Kasat Baltor|13727210|
-|Lucas Issao Omati||13673090|
+|Lucas Issao Omati|13673090|
 
 ## 1 - Projeto da Fonte
 
