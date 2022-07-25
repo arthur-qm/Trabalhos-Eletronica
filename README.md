@@ -4,28 +4,39 @@ Repositório com os trabalhos da disciplina de eletrônica
 
 ## Integrantes
 
-* Arthur Queiroz Moura
-* Miguel Prates Ferreira
-* Amanda Kasat Baltor
-* Lucas Omati
+| Membros | Número USP |
+|:-------------------- |:------|
+|Arthur Queiroz Moura|13671532|
+|Miguel Prates Ferreira de Lima Catanhede|13672745|
+|Amanda Kasat Baltor|13727210|
+|Lucas Issao Omati||13673090|
 
 ## 1 - Projeto da Fonte
 
-(tabela com os preços dos componentes)
+| Lista de componentes | Quantidade | Preço unitário | Preço total|
+|:-------------------- |:------|:------||:------|
+|LM-317|1|R$3.00||R$3.00|
+|Potenciômetro de 10k|1|R$4.00|R$4.00|
+|Diodo 1N-4004|4|R$0.10|R$0.40|
+|Capacitor Eletrolítico 470uF / 25V|1|R$0.45|R$0.45|
+|LED|1|R$0.50|R$0.50|
+|Resistor de 1k|8|R$0,10|R$0.80|
+|Total|-|-|**R$9.15**|
 
-Quanto ao transformador, o do laboratório foi utilizado.
+Quanto ao transformador, o do laboratório foi utilizado. Uma protoboard
+do laboratório também foi utilizada.
 
 **Imagem do circuito no simulador falstad:**
 
-![simulador](https://i.imgur.com/bkOYH3m.jpg)
+![simulador](https://i.imgur.com/CEwkDFq.jpg)
 
 **Link do circuito no simulador falstad:**
 
-https://tinyurl.com/226g5qdq
+https://tinyurl.com/25fb49nr
 
 **Projeto do esquemático no EAGLE:**
 
-(imagem)
+![eagleschem](https://i.imgur.com/5eDKxFX.jpg)
 
 **Projeto do PCB no EAGLE:**
 
@@ -64,7 +75,9 @@ Depois disso, temos 4 diodos associados ao resto do circuito de uma maneira espe
 arranjo conhecido como ponte de diodos. Para entender como ele funciona, é necessário
 entender primeiro o que um diodo faz. Esse elemento de circuito permite que a corrente
 passe em apenas um sentido. Ou seja, caso a voltagem seja aplicada como na imagem a seguir:
+
 ![explicacaodiodo](https://www.circuitbasics.com/wp-content/uploads/2020/08/What-is-a-Diode-Diode-in-Forward-Bias-300x177.png)
+
 (disponível em https://www.circuitbasics.com/what-is-a-diode/)
 
 então esse diodo poderá ser tratado como um fio liso. E, caso isso não ocorra, o diodo atuará
@@ -91,10 +104,12 @@ nessa função, como mostram as seguintes imagens:
 
 Gráfico da tensão de entrada produzida pelo transformador e pela fonte de corrente
 alternada
+
 ![senonormal](https://i.imgur.com/3aPkOew.jpg)
 
 Gráfico da tensão de saída nos terminais do resistor, resultante da interação
 da tensão de entrada do gráfico anterior com a ponte de diodo:
+
 ![senodiodos](https://i.imgur.com/73I4PcT.jpg)
 
 ou seja, a corrente só passa em um único sentido pelo resistor. **Entretanto**, vale
@@ -119,6 +134,7 @@ a explicação da primeira parte do circuito.
 **2) A adição de um capacitor**
 
 ![comcapacitor](https://i.imgur.com/S67Ut1t.jpg)
+
 (Disponível em https://tinyurl.com/2dneh7xk)
 
 Apesar de termos conseguido converter CA em CC (a corrente pelo resistor
@@ -143,12 +159,14 @@ utilizado é alta (470 micro farads). Essa nova variação de tensão seria o Vp
 representado pelo seguinte gráfico:
 
 ![vpp](https://www.homemade-circuits.com/wp-content/uploads/2015/11/smoothing-2.png)
+
 (Disponível em https://www.homemade-circuits.com/calculating-filter-capacitor-for/)
 
 Essa mudança no gráfico pode ser interpretada como intervalos de tempo em que 
 o capacitor carrega e descarrega sucessivamente:
 
 ![vppchargedischarge](https://blog.programmablepower.com/hs-fs/hubfs/Imported_Blog_Media/ripple.jpg?width=552&height=240&name=ripple.jpg)
+
 (Disponível em https://blog.programmablepower.com/blog/know-your-power-supply-jargon-ripple)
 
 Então, o Vpp pode ser calculado subtraindo a voltagem de quando o capacitor termina de
@@ -178,9 +196,9 @@ apesar de pequeno, é perceptível e o simulador confirma isso.
 
 Como mostrado no início, aqui estão novamente uma foto e o link para o simulador do circuito final
 
-![simulador](https://i.imgur.com/bkOYH3m.jpg)
+![simulador](https://i.imgur.com/CEwkDFq.jpg)
 
-https://tinyurl.com/226g5qdq
+https://tinyurl.com/25fb49nr
 
 Mas antes de continuarmos, é preciso, primeiramente, entender como funciona o regulador 
 de tensão LM-317. Ele é composto de três pinos: um de ajuste, um de saída e um de 
@@ -229,8 +247,8 @@ a presença do potenciômetro, apenas um de seus resistores internos é consider
 aproximadamente, o que se pede). No simulador foi colocado um resistor de 1k para representar
 o celular.
 
-Quanto aos vários resistores de 1k juntos, eles são apenas para obter uma resistência equivalente
-de 1.25k (um em série com 4 em paralelo = 1k + 1k/4 = 1.25k), até porque só compramos resistores de 1k.
+Como não tínhamos resistores de 1.25k a disposição, fizemos uma associação em série de um 
+resistor de 1k com 4 resistores de 1k em paralelo (1k + 1k/4 = 1.25k).
 
 
 ## 2 - Projeto de Arduino - Robô equilibrista
@@ -246,4 +264,3 @@ Usando o Arduino UNO e mais alguns componentes, como a MPU6050, desenvolvemos um
 |(Roda arduíno)x2|(R$13,50)x2=R$27,00|
 |Protoboard|R$12,50|
 |Total|**R$201,11**|
-
