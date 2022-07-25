@@ -14,7 +14,7 @@ Repositório com os trabalhos da disciplina de eletrônica
 ## 1 - Projeto da Fonte
 
 | Lista de componentes | Quantidade | Preço unitário | Preço total|
-|:-------------------- |:------|:------||:------|
+|:-------------------- |:------|:------|:------|
 |LM-317|1|R$3.00||R$3.00|
 |Potenciômetro de 10k|1|R$4.00|R$4.00|
 |Diodo 1N-4004|4|R$0.10|R$0.40|
