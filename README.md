@@ -265,7 +265,10 @@ o celular.
 Como não tínhamos resistores de 1.25k a disposição, fizemos uma associação em série de um 
 resistor de 1k com 4 resistores de 1k em paralelo (1k + 1k/4 = 1.25k).
 
-Na prática, foram obtidas as tensões 13.6V e 2.3V.
+Na prática, foram obtidas as tensões 13.6V e 2.3V, próximas o suficiente dos 13 e 3V 
+pedidos inicialmente.
+
+### Vídeo do projeto da fonte
 
 ## 2 - Projeto de Arduino - Robô equilibrista
 Usando o Arduino UNO e mais alguns componentes, como a MPU6050, desenvolvemos um robô que se equilibra sozinho em apenas duas rodas. A sua principal característica é sua condição naturalmente instável, com dinâmica altamente não-linear.
@@ -280,3 +283,104 @@ Usando o Arduino UNO e mais alguns componentes, como a MPU6050, desenvolvemos um
 |(Roda arduíno)x2|(R$13,50)x2=R$27,00|
 |Protoboard|R$12,50|
 |Total|**R$201,11**|
+
+Para a confecção do projeto utilizando Arduino, foi tida a ideia de um robô equilibrista. Para cumprir seu propósito, foi necessário um giroscópio e também uma ponte H, ademais dos motores e da própria placa de arduino. Em seu físico, o robô possui as rodas viradas para fora e tende a manter o seu centro de massa para baixo, já que um casing de baterias foi colocado por dentro do corpo.
+
+![fiação](https://i.imgur.com/YhPOWUB.jpg)
+
+(fiação do robô - desenhado pelo próprio grupo)
+
+Primeiramente, o Arduino comunica-se com o MPU6050 (giroscópio, posicionado rente ao corpo do robô) através da biblioteca “Wire.h”, que utiliza as portas analógicas A5 e A4 da placa. Por meio de uma biblioteca chamada “MPU6050_tockn.h”, o programa automaticamente já identifica o driver do giroscópio e através do método “.getAngleY()”, tem-se a inclinação do robô em graus.
+
+A programação, durante a parte de Setup, há um pequeno loop que faz uma primeira verificação do ângulo do robô e atribui esse valor à variável “normal”. Dessa forma, presume-se que é necessário um tempo mínimo de espera para que o Arduino faça a leitura e consiga uma marcação inicial do que será o 0°.
+
+Durante a execução da fase de loop do Arduino, o valor do giroscópio no eixo Y é lido constantemente (método “update()” e “getAngleY()” do MPU) e é comparado com a variável “normal”. Esse valor, em módulo, é multiplicado por uma constante experimental ‘k’ (0.055) e obtêm-se o valor da velocidade utilizada nos motores (em uma escala de 0 a 1). Isso é importante já que se o ângulo for pequeno, uma pequena correção basta, porém se o ângulo for grande, é necessária uma alta velocidade para fazer uma grande correção. Além disso, sabendo o valor da diferença angular, caso este seja positivo, o robô terá que ir para uma direção e, caso negativo, terá que ir na direção contrária para fazer o balanço de peso. O método responsável por fazer esse controle dos motores é o “Set()”, que recebe como entrada quatro números inteiros (apenas de valor 0 ou 1) para indicar como será a configuração para ligar os motores e um float que marca a velocidade (o valor que antes era de 0 a 1 é multiplicado por 255). Para explicar mais sobre o método “Set”, é necessário um entendimento de como atua uma ponte H.
+
+Os motores utilizados no projeto são do tipo DC, ou seja, conseguem girar tanto no sentido horário como no anti-horário ao inverter-se os terminais. É para fazer esse processo, bem como regular a tensão nos motores (e consequentemente a sua velocidade), que justamente se usa uma ponte H.
+
+![](https://i.imgur.com/tmS7hGC.jpg)
+
+(Motores)
+
+O circuito da ponte H funciona “pegando” o VCC e o GND (fio vermelho e preto ligados no meio do driver) e os redireciona para um dos terminais do motor dependendo da configuração. Por exemplo, se a1 estivesse com uma tensão de 5V (análogo a “ligado” para o arduino) e o a2 com 0V, o driver faria o motor A girar para uma direção. Se a situação fosse outra e a2 estivesse com 5V e a1 com 0V, o motor giraria para a direção contrária (a1 e a2 ligados ou desligados simultaneamente não fazem o motor girar). Além disso, a tensão que vai para o motor é proporcional a tida no terminal. Por exemplo, se alimentarmos a1 com 1V ao invés de 5V, o motor seria alimentado com 1/5 da voltagem normal e passaria a girar mais devagar.
+
+Função “Set”:
+
+```cpp
+void Set(int a1,int a2,int b1, int b2,float vel){
+  analogWrite(ma1,a1*vel*255);
+  analogWrite(ma2,a2*vel*255);
+  analogWrite(mb1,b1*vel*255);
+  analogWrite(mb2,b2*vel*255);
+}
+```
+
+A partir daí, o método “Set” entra recebendo qual será a configuração do motor (a1, a2, b1 e b2) e recebe a velocidade em uma escala entre 0 e 1. Através das portas PWM do arduino (no caso foram usadas a 3, 5, 6 e 9 da placa), que suportam como OUTPUT uma voltagem diferente de 0V e 5V fixos (como é o caso das outras portas digitais), a placa consegue enviar por meio do método “analogWrite()”, utilizado dentro da função “Set”, qual será a velocidade e a rotação de cada motor.
+
+Durante o projeto, uma das maiores dificuldades foi o ajuste do PID (controle da velocidade) que mesmo após testes de vários estilos diferentes, o que melhor funcionou foi o linear (utilizando o ‘k’ já explicado anteriormente), porém esse método não atua muito bem quando a diferença do ângulo atual para o desejado se mantém constante por muito tempo (situação semelhante ao do robô caindo e rodando com velocidade insuficiente para virar para cima de novo). Dessa forma (e também para resolver o desligamento da placa por falta de energia), deixamos um cabo USB para servir de guia e assim observar melhor a movimentação do robô.
+
+Programação final:
+
+```cpp
+#include <Wire.h>
+#include <MPU6050_tockn.h>
+#define ma1 5
+#define ma2 3
+#define mb1 6
+#define mb2 9
+/*Nota: as portas 5 e 3 estão invertidas, 
+porém na programação o método Set é utilizado já 
+considerando isso*/
+#define MPU6050_ADDR
+
+MPU6050 mpu6050(Wire);
+
+float angulo;
+float normal = 0;
+const float k = 0.055;
+float vel;
+void setup() {
+  pinMode(ma1,OUTPUT);
+  pinMode(ma2,OUTPUT);
+  pinMode(mb1,OUTPUT);
+  pinMode(mb2,OUTPUT);
+  Serial.begin(9600);
+  Serial.println("bomdia");
+  Wire.begin();
+  Set(0,0,0,0,0);
+  mpu6050.begin();
+  mpu6050.calcGyroOffsets(false);// MUDAR PARA "true" SE QUISER VISUALIZAR INFORMAÇÕES DE CALIBRAÇÃO NO MONITOR SERIAL
+  for(int c=0;c<10;c++){
+    mpu6050.update();
+    normal = mpu6050.getAngleY();delay(10);
+  }
+}
+
+void Set(int a1,int a2,int b1, int b2,float vel){
+  Serial.print("vel: ");
+  Serial.println(vel*255);
+  analogWrite(ma1,a1*vel*255);
+  analogWrite(ma2,a2*vel*255);
+  analogWrite(mb1,b1*vel*255);
+  analogWrite(mb2,b2*vel*255);
+}
+
+
+void loop() {
+  mpu6050.update();
+  angulo = mpu6050.getAngleY();
+  vel = abs(angulo-normal)*(k);
+  if(vel>1){vel=1;}//Limita o valor para um máximo de 1
+  if(vel<0){vel=0;}//Limita o valor para um mínimo de 0
+  if(angulo-normal<0){
+    Set(0,1,0,1,vel);//Gira para o lado 1
+    Serial.println("--Lado2");
+  }else{
+    Set(1,0,1,0,vel);//Gira para o lado 2
+    Serial.println("--Lado1");
+  }
+}
+
+```
+
+### Vídeo do projeto do arduino
