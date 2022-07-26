@@ -268,7 +268,15 @@ resistor de 1k com 4 resistores de 1k em paralelo (1k + 1k/4 = 1.25k).
 Na prática, foram obtidas as tensões 13.6V e 2.3V, próximas o suficiente dos 13 e 3V 
 pedidos inicialmente.
 
-### Vídeo do projeto da fonte
+### Vídeos do projeto da fonte
+
+Explicando o projeto - Protoboard e falstad
+
+https://youtu.be/9WcHB37k2ZA
+
+Mostrando o projeto funcionando
+
+https://youtu.be/9D96jMNKrvc
 
 ## 2 - Projeto de Arduino - Robô equilibrista
 Usando o Arduino UNO e mais alguns componentes, como a MPU6050, desenvolvemos um robô que se equilibra sozinho em apenas duas rodas. A sua principal característica é sua condição naturalmente instável, com dinâmica altamente não-linear.
@@ -384,3 +392,4 @@ void loop() {
 ```
 
 ### Vídeo do projeto do arduino
+https://youtu.be/CR_Ux2DQqDw
