@@ -28,26 +28,26 @@ do laboratório também foi utilizada.
 
 **Imagem do circuito no simulador falstad:**
 
-![simulador](https://i.imgur.com/CEwkDFq.jpg)
+![simulador](https://i.imgur.com/jccTjbd.jpg)
 
 **Link do circuito no simulador falstad:**
 
-https://tinyurl.com/25fb49nr
+https://tinyurl.com/272uz8o5
 
-**Projeto do esquemático no EAGLE:**
+**Projeto do esquemático no Software Protheus:**
 
-![eagleschem](https://i.imgur.com/5eDKxFX.jpg)
+![pcb](https://i.imgur.com/TV0n1Ht.jpg)
 
-**Projeto do PCB no EAGLE:**
+**Projeto do PCB no Software Protheus:**
 
-(imagem)
+![esquematico](https://i.imgur.com/ZfrtCcB.jpg)
 
 ### Explicação do circuito
 
 **0) Considerações iniciais**
 
-Considerou-se o fornecimento de 110V RMS para um transformador que converteu para 18V RMS.
-E, para simular esse comportamento, no simulador Falstad, foi colocada a razão N1/N2 = 18/110 = 0.1636
+Considerou-se o fornecimento de 127V RMS para um transformador que converteu para 24V RMS.
+E, para simular esse comportamento, no simulador Falstad, foi colocada a razão N1/N2 = 24/127 = 0.188976
 aproximadamente.
 
 Para entender o circuito, foram utilizados outros circuitos "parciais" mais simples
@@ -57,19 +57,19 @@ que ajudam a explicar melhor cada parte.
 
 ![Apenas resistor](https://i.imgur.com/x59rjGm.jpg)
 
-(Disponível em https://tinyurl.com/224l2huz)
+(Disponível em https://tinyurl.com/29pcrfnf)
 
 Esse elemento do circuito mais a esquerda é uma fonte de corrente alternada de 60Hz. Quando 
 o associamos ao elemento de circuito a sua direita, um transformador, é possível mudar os 
 níveis de tensão com os quais se trabalha.
 
-No caso, essa fonte de corrente alternada representaria uma tomada comum de 110V 
-RMS e esse transformador é capaz de _transformar_ esses 110V RMS em 18V RMS. Esse "RMS"
+No caso, essa fonte de corrente alternada representaria uma tomada comum de 127V 
+RMS e esse transformador é capaz de _transformar_ esses 127V RMS em 24V RMS. Esse "RMS"
 significa root mean square e, quando se diz que algo relacionado a uma fonte de tensão
 alternada é x volts RMS, isso significa que a tensão de pico dessa fonte de corrente 
-alternada é x vezes raiz de 2. Ou seja, a tensão de pico dessa fonte de 110V RMS é,
-na verdade, 110V vezes raiz de 2 = 155,56V. Portanto, ao passar pelo transformador, temos
-que a voltagem é dada por uma onda seinodal de pico 18V vezes raiz de 2 = 25,46V.
+alternada é x vezes raiz de 2. Ou seja, a tensão de pico dessa fonte de 127V RMS é,
+na verdade, 127V vezes raiz de 2 = 179.6V. Portanto, ao passar pelo transformador, temos
+que a voltagem é dada por uma onda seinodal de pico 24V vezes raiz de 2 = 33.94V.
 
 Depois disso, temos 4 diodos associados ao resto do circuito de uma maneira específica, num
 arranjo conhecido como ponte de diodos. Para entender como ele funciona, é necessário
@@ -113,7 +113,7 @@ da tensão de entrada do gráfico anterior com a ponte de diodo:
 ![senodiodos](https://i.imgur.com/73I4PcT.jpg)
 
 ou seja, a corrente só passa em um único sentido pelo resistor. **Entretanto**, vale
-ressaltar que a voltagem de pico no segundo gráfico seria, na verdade, V_p - 1,4V=25.46V-1.4V=24.06V, uma
+ressaltar que a voltagem de pico no segundo gráfico seria, na verdade, V_p - 1,4V=33.94V-1.4V=32.54V, uma
 vez que, como foi mencionado, para voltagens grandes em comparação com 0.7V, há 
 uma queda de 0.7V quando a corrente passa por um diodo e, nesse circuito, a corrente
 passa por dois diodos ao mesmo tempo, gerando duas quedas de 0.7V, resultando nos 1.4V.
@@ -181,9 +181,16 @@ Note que esse tempo de carregamento equivale, aproximadamente, ao tempo entre do
 do gráfico (na verdade, pelo gráfico, é possível ver que é um pouco menor, então isso é uma
 aproximação), que é T/2 = 1/(2f) (já que o período é o inverso da frequência). Então, pondo
 t = 1/(2f), obtém-se a tensão do capacitor depois de terminar de ser descarregado, que é 
-Vmin = Vmax x e^(-1/(2f R C)) em que f=60Hz, R=1000ohms, C=470 micro farads e Vmax = 24.06V. Logo,
-Vmin vale aproximadamente 23.64V e Vpp = Vmax - Vmin = 24.06V - 23.64V = 0.42V, que é pequeno
-comparado aos 24.06V iniciais.
+Vmin = Vmax x e^(-1/(2f R C)) em que f=60Hz, R=1000ohms, C=470 micro farads e Vmax = 32.54V. Logo,
+Vmin vale aproximadamente 31.97V e Vpp = Vmax - Vmin = 32.54V - 31.97V = 0.57V, que é pequeno
+comparado aos 32.54V iniciais. De fato, 0.57/32.54 = 1.75%. Isso quer dizer que 
+com esse capacitor o ripple é apenas 1.75%.
+
+Também é possível obter esse mesmo valor de maneira mais simples. Como -t/RC
+possui módulo pequeno, é possível aproximar e^(-x) = 1 - x (por conta da série de Taylor),
+de maneira que Vmin = Vmax (1 - T/(2RC)) --> Vmax - Vmin = Vmax  x  T / (2RC)
+--> Vripple/Vmax = T / (2RC) = 1/(2fRC). Logo, se tivéssemos aplicado a fórmula
+1/(2fRC) logo de cara teríamos encontrado 1.77%, que é bastante próximo dos 1.75% iniciais.
 
 No entanto, mesmo que tenhamos deixado essa variação bem menor, ela ainda é um valor
 perceptível, sendo que queremos uma voltagem constante. 
@@ -196,9 +203,9 @@ apesar de pequeno, é perceptível e o simulador confirma isso.
 
 Como mostrado no início, aqui estão novamente uma foto e o link para o simulador do circuito final
 
-![simulador](https://i.imgur.com/CEwkDFq.jpg)
+![simulador](https://i.imgur.com/jccTjbd.jpg)
 
-https://tinyurl.com/25fb49nr
+https://tinyurl.com/272uz8o5
 
 Mas antes de continuarmos, é preciso, primeiramente, entender como funciona o regulador 
 de tensão LM-317. Ele é composto de três pinos: um de ajuste, um de saída e um de 
@@ -209,8 +216,7 @@ entrada, como mostra a imagem
 (Disponível em https://www.indiamart.com/proddetail/lm317-3-terminal-adjustable-regulator-20285661873.html)
 
 A função dele é, basicamente, manter a tensão entre os pinos de ajuste e de saída
-de aproximadamente 1.25V (segundo o datasheet) para uma tensão de entrada arbitrária
-entre 3V e 30V. A partir desse fato e da imagem a seguir, é possível chegar na 
+de aproximadamente 1.25V (segundo o datasheet) para uma tensão de entrada maior que 3V. A partir desse fato e da imagem a seguir, é possível chegar na 
 equação Vout = 1.25V x (1 + R2/R1).
 
 ![lm317formula](https://daumemo.com/wp-content/uploads/2020/02/LM317-voltage-source.png)
@@ -233,11 +239,20 @@ pode ser representada pelo seguinte desenho
 
 ![fim](https://i.imgur.com/9Tg65Qw.jpg)
 
-Primeiramente, ocorre alimentação por um Vin (maior que 3V e menor que 30V) que varia 
-conforme o circuito com capacitor (variando aproximadamente entre 23.1V e 22.6V, 
-portanto
-dentro dessa faixa). Também note que adicionamos um LED para mostrar se o circuito
-está funcionando.
+Primeiramente, ocorre alimentação por um Vin (maior que 3V) que varia 
+conforme o circuito com capacitor, que já foi mostrado. Também note que adicionamos um LED para mostrar se o circuito
+está funcionando. A adição desses elementos muda um pouco os cálculos associados
+ao ripple do capacitor. Pelo simulador, nota-se que 3mA são puxados pelo LM317.
+Também deve ser considerada a influência da queda de aproximadamente 1.8V do LED.
+No entanto, de acordo com o simulador, isso não interfere no caráter de de não ter
+muito ripple. De fato, ao fazer a equação diferencial desconsiderando a influência 
+dos 3mA e apenas do LED, bem como a aproximação por série de Taylor, chega-se em
+Vmin = 1.8V + (Vmax - 1.8V) x (1 - 1/(2fRC)). Calculando Vmin e, a partir daí, ripple=
+(Vmax-Vmin)/Vmax, chega-se num ripple de 1,66%.
+
+Considerando que fizemos várias aproximações nesses cálculos, os valores do simulador
+são um pouco diferentes, mas o que importa é que o ripple continua bem pequeno
+( cerca de 1.2%, que é ainda menor).
 
 Perceba que no desenho foi aplicada a fórmula do LM317 para o cálculo de Vout. Além
 disso, note que no numerador da fração foi utilizado R1 + 1kohm, porque, considerando
@@ -250,6 +265,7 @@ o celular.
 Como não tínhamos resistores de 1.25k a disposição, fizemos uma associação em série de um 
 resistor de 1k com 4 resistores de 1k em paralelo (1k + 1k/4 = 1.25k).
 
+Na prática, foram obtidas as tensões 13.6V e 2.3V.
 
 ## 2 - Projeto de Arduino - Robô equilibrista
 Usando o Arduino UNO e mais alguns componentes, como a MPU6050, desenvolvemos um robô que se equilibra sozinho em apenas duas rodas. A sua principal característica é sua condição naturalmente instável, com dinâmica altamente não-linear.
