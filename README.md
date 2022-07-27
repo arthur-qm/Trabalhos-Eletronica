@@ -266,7 +266,8 @@ Como não tínhamos resistores de 1.25k a disposição, fizemos uma associação
 resistor de 1k com 4 resistores de 1k em paralelo (1k + 1k/4 = 1.25k).
 
 Na prática, foram obtidas as tensões 13.6V e 2.3V, próximas o suficiente dos 13 e 3V 
-pedidos inicialmente.
+pedidos inicialmente. Essas diferenças provavelmente deveram-se a não idealidade dos
+componentes e aos maus contatos ocorridos na protoboard.
 
 ### Vídeos do projeto da fonte
 
